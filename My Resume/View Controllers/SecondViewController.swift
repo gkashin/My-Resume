@@ -10,9 +10,13 @@ import UIKit
 
 class SecondViewController: UIViewController {
     
-    @IBOutlet weak var greetingLabel: UILabel!
+    var information = ""
+    
+    @IBOutlet weak var informationLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        informationLabel.text = information
     }
 }
