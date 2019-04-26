@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     var userName = ""
     var password = ""
     
-    //@IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -24,6 +24,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var forgotPasswordButton: UIButton!
     
     @IBAction func logInButtonPressed() {
+        guard userNameTextField.text != "" else { return }
+        guard passwordTextField.text != "" else { return }
+        
         guard userNameTextField.text == userName else {
             showAlert(title: "Не удалось войти", message: "Неправильное имя пользователя")
             return
@@ -67,11 +70,11 @@ class ViewController: UIViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
-        //registerForKeyboardNotifications()
+        registerForKeyboardNotifications()
     }
     
     deinit {
-        //removeKeyboardNotifications()
+        removeKeyboardNotifications()
     }
     
     @objc private func dismissKeyboard() {
@@ -128,25 +131,25 @@ extension ViewController {
 }
 
 //MARK: - Notifications (тут хотел использовать notifications, чтобы сдвигать содержимое, но что-то пошло не так)
-//extension ViewController {
-//
-//    func registerForKeyboardNotifications() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//
-//    func removeKeyboardNotifications() {
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//
-//    @objc func keyboardWillShow(_ notification: Notification) {
-//        let userInfo = notification.userInfo
-//        let keyboardFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-//        scrollView.contentOffset = CGPoint(x: 0, y: keyboardFrameSize.height)
-//    }
-//
-//    @objc func keyboardWillHide() {
-//        scrollView.contentOffset = CGPoint.zero
-//    }
-//}
+extension ViewController {
+
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    func removeKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(_ notification: Notification) {
+        let userInfo = notification.userInfo
+        let keyboardFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        scrollView.contentOffset = CGPoint(x: 0, y: keyboardFrameSize.height / 4)
+    }
+
+    @objc func keyboardWillHide() {
+        scrollView.contentOffset = CGPoint.zero
+    }
+}
