@@ -11,12 +11,15 @@ import UIKit
 class SecondViewController: UIViewController {
     
     var information = ""
+    var isHidden = true
     
     @IBOutlet weak var informationLabel: UILabel!
+    @IBOutlet weak var showMoreButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         informationLabel.text = information
+        showMoreButton.isHidden = isHidden
     }
 }
